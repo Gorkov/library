@@ -23,6 +23,7 @@ class Book extends Model
     /**
      * Get books information in expanded form
      *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public static function getAllBooksInfo()
     {
@@ -50,6 +51,6 @@ class Book extends Model
             ->get();
         ;
 
-        return ($books->isNotEmpty()) ? $books : [];
+        return ($books->isNotEmpty()) ? $books : null;
     }
 }

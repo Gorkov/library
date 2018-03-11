@@ -14,7 +14,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $data['authors'] = Author::all();
+        $data['authors'] = Author::getAllAuthorsInfo();
 
         return view('authors.index', $data);
     }
