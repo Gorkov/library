@@ -20,7 +20,7 @@ class CreateBooksTable extends Migration
             $table->integer('genre_id')->unsigned();
             $table->tinyInteger('rating')->comment('Пользовательский рейтинг книги');
             $table->timestamps();
-            $table->tinyInteger('removed');
+            $table->tinyInteger('removed')->default(0);
         });
     }
 
