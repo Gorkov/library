@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Author;
 use Illuminate\Http\Request;
 
 class AuthorController extends Controller
@@ -13,7 +14,9 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //
+        $data['authors'] = Author::all();
+
+        return view('authors.index', $data);
     }
 
     /**
