@@ -10,10 +10,10 @@ class Author extends Model
     /**
      * Get authors information in expanded form
      *
-     * @param array $filters
+     * @param string $filter
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public static function getAllAuthorsInfo(array $filters = [])
+    public static function getAllAuthorsInfo(string $filter = '')
     {
 
         $authors = self::where('removed', 0)->get();
@@ -23,8 +23,11 @@ class Author extends Model
         // added number of books, genre prevail and average books rating to the authors collection.
         foreach ($authors as &$author) {
             $author->books = self::getAuthorBooks($author->id, $books)->count();
-            //$author->genre = self::getGenrePrevail($author->id, $books);
             $author->rating = self::getAverageBooksRating($author->id, $books);
+        }
+
+        if (!empty($filter)) {
+            $authors = $authors->sortByDesc($filter)->values();
         }
 
         return ($authors->isNotEmpty()) ? $authors : null;

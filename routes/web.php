@@ -15,5 +15,8 @@ Route::get('/', function () {
 });
 
 Route::resource('/books/','BookController');
+
 Route::resource('/authors/','AuthorController');
+Route::get('/authors/{filter}','AuthorController@filter');
+
 Route::resource('/genres/','GenreController');
