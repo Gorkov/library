@@ -6,7 +6,7 @@
         <table class="table">
             @foreach($genres as $genre)
                 <tr>
-                    <td>{{$genre->id}}</td>
+                    <td class="genre__link">{{$genre->id}}</td>
                     <td>
                         <a href="/genre/{{$genre->id}}">{{$genre->name}}</a>
 

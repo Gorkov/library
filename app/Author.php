@@ -111,13 +111,15 @@ class Author extends Model
      */
     public static function sortByFilter($data = null, $sort = [])
     {
-        switch ($sort['sort_conditions']) {
-            case 'asc':
-                $data = $data->sortBy($sort['sort_by']);
-                break;
-            case 'desc':
-                $data = $data->sortByDesc($sort['sort_by']);
-                break;
+        if (!empty($sort)) {
+            switch ($sort['sort_conditions']) {
+                case 'asc':
+                    $data = $data->sortBy($sort['sort_by']);
+                    break;
+                case 'desc':
+                    $data = $data->sortByDesc($sort['sort_by']);
+                    break;
+            }
         }
 
         return $data;

@@ -12,6 +12,7 @@ var sortModule = (function () {
     var _setUpListners = function () {
         $('a[href^="/authors/sort/"]').on("click", _authorsSort);
         $('a[href^="/genres/sort/"]').on("click", _genresSort);
+        $('.genre__link').on("click", _showGenreAuthors);
     };
 
     var _authorsSort = function (e) {
@@ -44,6 +45,10 @@ var sortModule = (function () {
                 $('#genre_'+ genreID).html(response.data);
             }
         })
+    };
+
+    var _showGenreAuthors = function () {
+        $(this).next().find('.table--inside').toggle('slow');
     };
 
     // returning an object

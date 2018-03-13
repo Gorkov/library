@@ -51,8 +51,14 @@
             text-decoration: none;
             text-transform: uppercase;
         }
+        .genre__link {
+            cursor: pointer;
+        }
+        .genre__link:hover {
+            background-color: #ddd;
+        }
         .table--inside {
-            font-size: 12px;
+            display: none;
         }
         .td--center {
             text-align: center;
