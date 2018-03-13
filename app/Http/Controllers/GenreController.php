@@ -15,6 +15,9 @@ class GenreController extends Controller
     public function index()
     {
         $data['genres'] = Genre::getAllGenresInfo();
+        if (empty($data['genres'])) {
+            return redirect('/genres');
+        }
 
         return view('genres.index', $data);
     }
@@ -48,7 +51,13 @@ class GenreController extends Controller
      */
     public function show($id)
     {
-        //
+        $data['genre'] = Genre::find($id);
+
+        if (empty($data['genre'])) {
+            return redirect('/genres');
+        }
+
+        return view('genres.show',$data);
     }
 
     /**

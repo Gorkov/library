@@ -15,8 +15,10 @@ Route::get('/', function () {
 });
 
 Route::resource('/books/','BookController');
+Route::get('/book/{id}','BookController@show');
 
 Route::resource('/authors/','AuthorController');
-Route::get('/authors/{filter}','AuthorController@filter');
+Route::get('/author/{id}','AuthorController@show');
 
 Route::resource('/genres/','GenreController');
+Route::get('/genre/{id}','GenreController@show');

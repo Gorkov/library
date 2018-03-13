@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Author;
-use App\Book;
 use Illuminate\Database\Eloquent\Model;
 
 class Genre extends Model
@@ -30,5 +28,29 @@ class Genre extends Model
         }
 
         return $genres;
+    }
+
+    /**
+     * Get genres list by one author
+     *
+     * @param int $authorID
+     * @return array
+     */
+    public static function getGenresByAuthor(int $authorID):array
+    {
+        $authorBooks = Book::getBooksByAuthor($authorID);
+        if (empty($authorBooks)) {
+            return null;
+        }
+
+        $genresByAuthor = [];
+
+        $authorBooks = $authorBooks->values()->unique('genre_id');
+
+        foreach ($authorBooks as $book) {
+            $genresByAuthor[] = $book->genre_id;
+        }
+
+        return $genresByAuthor;
     }
 }

@@ -15,18 +15,10 @@ class AuthorController extends Controller
     public function index()
     {
         $data['authors'] = Author::getAllAuthorsInfo();
-        return view('authors.index', $data);
-    }
+        if (empty($data['authors'])) {
+            return redirect('/authors');
+        }
 
-    /**
-     * Display the all authors info by the filter
-     *
-     * @param $filter
-     * @return \Illuminate\Http\Response
-     */
-    public function filter(string $filter = '')
-    {
-        $data['authors'] = Author::getAllAuthorsInfo($filter);
         return view('authors.index', $data);
     }
 
@@ -59,7 +51,14 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        //
+        $data['author'] = Author::find($id);
+        if (empty($data['author'])) {
+            return redirect('/authors');
+        }
+
+        $data['similar_authors'] = Author::getSimilarAuthorsByGenre($id);
+
+        return view('authors.show',$data);
     }
 
     /**

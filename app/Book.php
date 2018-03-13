@@ -7,19 +7,6 @@ use Illuminate\Database\Query\JoinClause;
 
 class Book extends Model
 {
-    public $table = 'books';
-
-    public function author()
-    {
-        return $this->belongsTo('App\Author');
-    }
-
-    public function genre()
-    {
-        return $this->belongsTo('App\Genre');
-    }
-
-
     /**
      * Get books information in expanded form
      *
@@ -51,7 +38,7 @@ class Book extends Model
             ->get();
         ;
 
-        return ($books->isNotEmpty()) ? $books : null;
+        return $books;
     }
 
     /**
@@ -65,6 +52,9 @@ class Book extends Model
     {
         if (!isset($books)) {
             $books = Book::where('removed', 0)->get();
+            if (empty($books)) {
+                return null;
+            }
         }
         $authorBooks = $books->filter(function($book) use ($authorID) {
             return $book->author_id === $authorID;
@@ -83,6 +73,9 @@ class Book extends Model
     {
         if (!isset($books)) {
             $books = Book::where('removed', 0)->get();
+            if (empty($books)) {
+                return null;
+            }
         }
         $authorBooks = self::getBooksByAuthor($authorID, $books);
         $average = $authorBooks->avg('rating');

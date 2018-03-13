@@ -21,7 +21,7 @@
                                 @foreach($genre->authors as $key => $author)
                                     <tr>
                                         <td>{{++$key}}</td>
-                                        <td><a href="/authors/{{$author->author_id}}">{{$author->author_name}} {{$author->author_surname}}</a></td>
+                                        <td><a href="/author/{{$author->author_id}}">{{$author->author_name}} {{$author->author_surname}}</a></td>
                                         <td class="td--center">
                                             @if ($author->author_rating > 0)
                                                 {{$author->author_rating}}

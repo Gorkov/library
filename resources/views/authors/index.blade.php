@@ -14,7 +14,7 @@
         @foreach($authors as $key => $author)
             <tr>
                 <td>{{++$key}}</td>
-                <td><a href="/authors/{{$author->id}}">{{$author->name}} {{$author->surname}}</a></td>
+                <td><a href="/author/{{$author->id}}">{{$author->name}} {{$author->surname}}</a></td>
                 <td class="td--center">
                     @if (!empty($author->books))
                         {{$author->books}}

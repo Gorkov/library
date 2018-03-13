@@ -15,6 +15,9 @@ class BookController extends Controller
     public function index()
     {
         $data['books'] = Book::getAllBooksInfo();
+        if ($data['books']->isEmpty()) {
+            return redirect('/books');
+        }
 
         return view('books.index', $data);
     }
@@ -48,7 +51,12 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+        $data['book'] = Book::find($id);
+        if (empty($data['book'])) {
+            return redirect('/books');
+        }
+
+        return view('books.show',$data);
     }
 
     /**
