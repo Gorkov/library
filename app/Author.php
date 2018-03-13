@@ -22,8 +22,8 @@ class Author extends Model
 
         // added number of books, genre prevail and average books rating to the authors collection.
         foreach ($authors as &$author) {
-            $author->books = self::getAuthorBooks($author->id, $books)->count();
-            $author->rating = self::getAverageBooksRating($author->id, $books);
+            $author->books = Book::getBooksByAuthor($author->id, $books)->count();
+            $author->rating = Book::getAverageBooksRating($author->id, $books);
         }
 
         if (!empty($filter)) {
@@ -34,59 +34,33 @@ class Author extends Model
     }
 
     /**
-     * Get books from this author
+     * Get authors by genre
      *
-     * @param int $authorID
+     * @param int $genreID
      * @param $books
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public static function getAuthorBooks(int $authorID = 0, $books = null)
+    public static function getAuthorsByGenre(int $genreID = 0, $books = null)
     {
         if (!isset($books)) {
-            $books = Book::where('removed', 0)->get();
+            $books = Book::getAllBooksInfo();
         }
-        $authorBooks = $books->filter(function($book) use ($authorID) {
-            return $book->author_id === $authorID;
+
+        $genreBooks = $books->filter(function($book) use ($genreID) {
+            return $book->genre_id === $genreID;
         });
-        return $authorBooks;
 
-    }
-
-    /**
-     * Get prevail genre from this author
-     *
-     * @param int $authorID
-     * @param $books
-     * @return string
-     */
-    public static function getGenrePrevail(int $authorID = 0, $books = null)
-    {
-        if (!isset($books)) {
-            $books = Book::where('removed', 0)->get();
+        foreach ($genreBooks as &$book) {
+            $book->author_rating = Book::getAverageBooksRating($book->author_id, $books);
+            $book->book_id = $book->id;
+            $book->book_name = $book->name;
+            $book->book_rating = $book->rating;
+            unset($book->id,$book->name,$book->rating);
         }
-        $authorBooks = self::getAuthorBooks($authorID, $books);
 
-//        todo need to calculate and return the most popular genre from this author
-    }
+        $genreAuthors = $genreBooks->unique('author_id')->values();
 
-    /**
-     * Get average books rating from this author
-     *
-     * @param int $authorID
-     * @param null $books
-     * @return mixed Element (int/float/double)
-     */
-    public static function getAverageBooksRating(int $authorID = 0, $books = null)
-    {
-        if (!isset($books)) {
-            $books = Book::where('removed', 0)->get();
-        }
-        $authorBooks = self::getAuthorBooks($authorID, $books);
-        $average = $authorBooks->avg('rating');
+        return $genreAuthors;
 
-//        todo need create some /App/Lib/Functions.php for similar designs
-        $average = gettype($average) === 'integer' ? $average : number_format($average, 1, '.', '');
-
-        return $average;
     }
 }

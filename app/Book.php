@@ -53,4 +53,43 @@ class Book extends Model
 
         return ($books->isNotEmpty()) ? $books : null;
     }
+
+    /**
+     * Get books by author
+     *
+     * @param int $authorID
+     * @param $books
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public static function getBooksByAuthor(int $authorID = 0, $books = null)
+    {
+        if (!isset($books)) {
+            $books = Book::where('removed', 0)->get();
+        }
+        $authorBooks = $books->filter(function($book) use ($authorID) {
+            return $book->author_id === $authorID;
+        });
+        return $authorBooks;
+    }
+
+    /**
+     * Get average books rating from this author
+     *
+     * @param int $authorID
+     * @param null $books
+     * @return mixed Element (int/float/double)
+     */
+    public static function getAverageBooksRating(int $authorID = 0, $books = null)
+    {
+        if (!isset($books)) {
+            $books = Book::where('removed', 0)->get();
+        }
+        $authorBooks = self::getBooksByAuthor($authorID, $books);
+        $average = $authorBooks->avg('rating');
+
+//        todo need create some /App/Lib/Functions.php for similar designs
+        $average = gettype($average) === 'integer' ? $average : number_format($average, 1, '.', '');
+
+        return $average;
+    }
 }

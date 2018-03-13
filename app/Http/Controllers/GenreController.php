@@ -14,7 +14,7 @@ class GenreController extends Controller
      */
     public function index()
     {
-        $data['genres'] = Genre::all();
+        $data['genres'] = Genre::getAllGenresInfo();
 
         return view('genres.index', $data);
     }

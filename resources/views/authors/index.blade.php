@@ -6,7 +6,7 @@
     <table class="table">
         <thead>
         <td>#</td>
-        <td>Name</td>
+        <td>Authors name</td>
         <td><a href="/authors/books">Books</a></td>
         <td><a href="/authors/rating">Average books rating</a></td>
         </thead>
@@ -15,14 +15,14 @@
             <tr>
                 <td>{{++$key}}</td>
                 <td><a href="/authors/{{$author->id}}">{{$author->name}} {{$author->surname}}</a></td>
-                <td>
+                <td class="td--center">
                     @if (!empty($author->books))
                         {{$author->books}}
                     @else
                         -
                     @endif
                 </td>
-                <td>
+                <td class="td--center">
                     @if ($author->rating > 0)
                         {{$author->rating}}
                     @else

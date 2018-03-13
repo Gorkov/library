@@ -51,6 +51,12 @@
             text-decoration: none;
             text-transform: uppercase;
         }
+        .table--inside {
+            font-size: 12px;
+        }
+        .td--center {
+            text-align: center;
+        }
     </style>
 </head>
 <body>

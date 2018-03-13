@@ -6,8 +6,8 @@
         <table class="table">
             <thead>
             <td>#</td>
-            <td>Name</td>
-            <td>Author</td>
+            <td>Books name</td>
+            <td>Authors name</td>
             <td>Genre</td>
             <td>Rating</td>
             </thead>
@@ -18,7 +18,7 @@
                     <td><a href="/books/{{$book->id}}">{{$book->name}}</a></td>
                     <td><a href="/author/{{$book->author_id}}">{{$book->author_name}} {{$book->author_surname}}</a></td>
                     <td><a href="/genre/{{$book->genre_id}}">{{$book->genre_name}}</a></td>
-                    <td>{{$book->rating}}</td>
+                    <td class="td--center">{{$book->rating}}</td>
                 </tr>
             @endforeach
 
