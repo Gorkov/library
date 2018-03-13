@@ -10,13 +10,24 @@ class AuthorController extends Controller
     /**
      * Display the all authors info.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['authors'] = Author::getAllAuthorsInfo();
+        $sort = [
+            'sort_by' => $request->input('sort_by', 'books'),
+            'sort_conditions' => $request->input('sort_conditions', 'desc')
+        ];
+
+        $data['authors'] = Author::getAllAuthorsInfo($sort);
         if (empty($data['authors'])) {
             return redirect('/authors');
+        }
+
+        if ($request->ajax()) {
+            $authors = view('authors.list', $data)->render();
+            return response(['type'=> 'success', 'data' => $authors]);
         }
 
         return view('authors.index', $data);

@@ -10,13 +10,25 @@ class GenreController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['genres'] = Genre::getAllGenresInfo();
+        $sort = [
+            'sort_by' => $request->input('sort_by', 'rating'),
+            'sort_conditions' => $request->input('sort_conditions', 'desc'),
+            'genre_id' => $request->input('genre_id', 1)
+        ];
+
+        $data['genres'] = Genre::getAllGenresInfo($sort);
         if (empty($data['genres'])) {
             return redirect('/genres');
+        }
+
+        if ($request->ajax()) {
+            $genre = view('genres.one', $data['genres']->find($sort['genre_id']))->render();
+            return response(['type'=> 'success', 'data' => $genre]);
         }
 
         return view('genres.index', $data);

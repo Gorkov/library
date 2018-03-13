@@ -15,23 +15,23 @@
                                 <thead>
                                 <td>#</td>
                                 <td>Authors name</td>
-                                <td><a href="#">Average books rating</a></td>
+                                <td><a href="/genres/sort/" ref="{{$genre->id}}">Average books rating</a></td>
                                 </thead>
-
-                                @foreach($genre->authors as $key => $author)
-                                    <tr>
-                                        <td>{{++$key}}</td>
-                                        <td><a href="/author/{{$author->author_id}}">{{$author->author_name}} {{$author->author_surname}}</a></td>
-                                        <td class="td--center">
-                                            @if ($author->author_rating > 0)
-                                                {{$author->author_rating}}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-
+                                <tbody id="genre_{{$genre->id}}">
+                                    @foreach($genre->authors as $key => $author)
+                                        <tr>
+                                            <td>{{++$key}}</td>
+                                            <td><a href="/author/{{$author->author_id}}">{{$author->author_name}} {{$author->author_surname}}</a></td>
+                                            <td class="td--center">
+                                                @if ($author->rating > 0)
+                                                    {{$author->rating}}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         @else
                             <p>Sorry, we did not find the authors</p>

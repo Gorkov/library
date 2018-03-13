@@ -9,9 +9,10 @@ class Genre extends Model
     /**
      * Get genres information in expanded form
      *
+     * @param array $sort
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public static function getAllGenresInfo()
+    public static function getAllGenresInfo(array $sort = [])
     {
         $genres = self::all();
         if ($genres->isEmpty()) {
@@ -24,7 +25,7 @@ class Genre extends Model
         }
 
         foreach ($genres as &$genre) {
-            $genre['authors'] = Author::getAuthorsByGenre($genre->id, $books);
+            $genre['authors'] = Author::getAuthorsByGenre($genre->id, $books, $sort);
         }
 
         return $genres;

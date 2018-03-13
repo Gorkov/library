@@ -9,10 +9,10 @@ class Author extends Model
     /**
      * Get authors information in expanded form
      *
-     * @param string $filter
+     * @param array $sort
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public static function getAllAuthorsInfo(string $filter = '')
+    public static function getAllAuthorsInfo(array $sort = [])
     {
         $authors = self::where('removed', 0)->get();
         if (empty($authors)) {
@@ -30,11 +30,9 @@ class Author extends Model
             $author->rating = Book::getAverageBooksRating($author->id, $books);
         }
 
-        if (!empty($filter)) {
-            $authors = $authors->sortByDesc($filter)->values();
-        }
+        $authors = self::sortByFilter($authors, $sort);
 
-        return $authors;
+        return $authors->values();
     }
 
     /**
@@ -42,9 +40,10 @@ class Author extends Model
      *
      * @param int $genreID
      * @param $books
+     * @param array $sort
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public static function getAuthorsByGenre(int $genreID = 0, $books = null)
+    public static function getAuthorsByGenre(int $genreID = 0, $books = null, array $sort = [])
     {
         if (!isset($books)) {
             $books = Book::getAllBooksInfo();
@@ -58,16 +57,15 @@ class Author extends Model
         });
 
         foreach ($genreBooks as &$book) {
-            $book->author_rating = Book::getAverageBooksRating($book->author_id, $books);
+            $book->rating = Book::getAverageBooksRating($book->author_id, $books);
             $book->book_id = $book->id;
             $book->book_name = $book->name;
-            $book->book_rating = $book->rating;
-            unset($book->id,$book->name,$book->rating);
+            unset($book->id,$book->name);
         }
 
-        $genreAuthors = $genreBooks->unique('author_id')->values();
+        $genreAuthors = self::sortByFilter($genreBooks->unique('author_id'), $sort);
 
-        return $genreAuthors;
+        return $genreAuthors->values();
 
     }
 
@@ -102,6 +100,27 @@ class Author extends Model
         $similarList = $similarList->unique('author_id');
 
         return $similarList;
+    }
+
+    /**
+     * Sorting data by filter
+     *
+     * @param null $data
+     * @param array $sort
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public static function sortByFilter($data = null, $sort = [])
+    {
+        switch ($sort['sort_conditions']) {
+            case 'asc':
+                $data = $data->sortBy($sort['sort_by']);
+                break;
+            case 'desc':
+                $data = $data->sortByDesc($sort['sort_by']);
+                break;
+        }
+
+        return $data;
     }
 
 }
