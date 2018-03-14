@@ -53,15 +53,17 @@
         }
         .genre__link {
             cursor: pointer;
+            animation:blinking 3s infinite;
         }
         .genre__link:hover {
             background-color: #ddd;
         }
-        .table--inside {
-            display: none;
-        }
         .td--center {
             text-align: center;
+        }
+        @keyframes blinking{
+            0%{background-color: #fff;}
+            100%{background-color:#ddd;}
         }
     </style>
 </head>
